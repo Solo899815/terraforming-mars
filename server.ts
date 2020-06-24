@@ -365,6 +365,7 @@ function createGame(req: http.IncomingMessage, res: http.ServerResponse): void {
         draftVariant: gameReq.draftVariant,
         corporateEra: gameReq.corporateEra,
         preludeExtension: gameReq.prelude,
+        onepreludecard: gameReq.onepreludecard,
         venusNextExtension: gameReq.venusNext,
         coloniesExtension: gameReq.colonies,
         turmoilExtension: gameReq.turmoil,
