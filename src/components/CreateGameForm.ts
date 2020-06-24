@@ -16,6 +16,7 @@ interface CreateGameModel {
     players: Array<NewPlayerModel>;
     corporateEra: boolean;
     prelude: boolean;
+    onepreludecard: boolean;
     draftVariant: boolean;
     initialDraft: boolean;
     randomFirstPlayer: boolean;
@@ -25,7 +26,7 @@ interface CreateGameModel {
     turmoil: boolean;
     customCorporationsList: Array<CardName>;
     showCorporationList: boolean;
-    isSoloModePage: boolean,
+    isSoloModePage: boolean;
     board: BoardName | "random";
     seed: number;
     solarPhaseOption: boolean;
@@ -59,14 +60,15 @@ export const CreateGameForm = Vue.component("create-game-form", {
                 {index: 6, name: "", color: Color.PURPLE, beginner: false, first: false}
             ],
             corporateEra: true,
-            prelude: false,
+            prelude: true,
+            onepreludecard: false,
             draftVariant: true,
             initialDraft: false,
             randomFirstPlayer: true,
-            showOtherPlayersVP: false,
-            venusNext: false,
+            showOtherPlayersVP: true,
+            venusNext: true,
             colonies: false,
-            turmoil: false,
+            turmoil: true,
             customCorporationsList: [],
             showCorporationList: false,
             isSoloModePage: false,
@@ -79,10 +81,10 @@ export const CreateGameForm = Vue.component("create-game-form", {
             ],
             seed: Math.random(),
             seededGame: false,
-            solarPhaseOption: false,
-            promoCardsOption: false,
-            undoOption: false,
-            startingCorporations: 2,
+            solarPhaseOption: true,
+            promoCardsOption: true,
+            undoOption: true,
+            startingCorporations: 3,
             soloTR: false,
             clonedGameData: undefined,
             cloneGameData: []
@@ -151,6 +153,7 @@ export const CreateGameForm = Vue.component("create-game-form", {
             
             const corporateEra = component.corporateEra;
             const prelude = component.prelude;
+            const onepreludecard = component.onepreludecard;
             const draftVariant = component.draftVariant;
             const initialDraft = component.initialDraft;
             const showOtherPlayersVP = component.showOtherPlayersVP;
@@ -178,7 +181,7 @@ export const CreateGameForm = Vue.component("create-game-form", {
             }
 
             const dataToSend = JSON.stringify({
-                players: players, corporateEra, prelude, draftVariant, showOtherPlayersVP, venusNext, colonies, turmoil, customCorporationsList, board, seed, solarPhaseOption, promoCardsOption, undoOption, startingCorporations, soloTR, clonedGamedId, initialDraft 
+                players: players, corporateEra, prelude, onepreludecard, draftVariant, showOtherPlayersVP, venusNext, colonies, turmoil, customCorporationsList, board, seed, solarPhaseOption, promoCardsOption, undoOption, startingCorporations, soloTR, clonedGamedId, initialDraft 
             });
 
             const onSucces = (response: any) => {
@@ -260,8 +263,12 @@ export const CreateGameForm = Vue.component("create-game-form", {
                             <label class="form-switch">
                                 <input type="checkbox" name="turmoil"  v-model="turmoil">
                                 <i class="form-icon"></i> <span v-i18n>Turmoil</span>
-                            </label>                            
+                            </label>
 
+                            <label class="form-switch">
+                                <input type="checkbox" v-model="promoCardsOption">
+                                <i class="form-icon"></i> <span v-i18n>Promo</span>
+                            </label>
                         </div>
 
                         <div class="create-game-options-block col3 col-sm-6">
@@ -297,14 +304,14 @@ export const CreateGameForm = Vue.component("create-game-form", {
                                 <i class="form-icon"></i> <span v-i18n>Show real-time VP</span>
                             </label>
 
-                            <label class="form-switch">
-                                <input type="checkbox" v-model="solarPhaseOption">
-                                <i class="form-icon"></i> <span v-i18n>Use Solar Phase Option</span>
+                            <label class="form-switch" v-if="prelude">
+                                <input type="checkbox" name="onepreludecard" v-model="onepreludecard">
+                                <i class="form-icon"></i> <span v-i18n>One Prelude Card</span>
                             </label>
 
                             <label class="form-switch">
-                                <input type="checkbox" v-model="promoCardsOption">
-                                <i class="form-icon"></i> <span v-i18n>Use promo cards</span>
+                                <input type="checkbox" v-model="solarPhaseOption">
+                                <i class="form-icon"></i> <span v-i18n>Use Solar Phase Option</span>
                             </label>
 
                             <label class="form-switch">
