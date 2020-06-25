@@ -145,7 +145,7 @@ export class Game implements ILoadable<SerializedGame, Game> {
           showOtherPlayersVP: false,
           customCorporationsList: [],
           solarPhaseOption: false,
-          oneprelude: false,
+          onepreludecard: false,
           promoCardsOption: false,
           undoOption: false,
           startingCorporations: 2,
