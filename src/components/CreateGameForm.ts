@@ -72,7 +72,7 @@ export const CreateGameForm = Vue.component("create-game-form", {
             showCorporationList: false,
             isSoloModePage: false,
             board: BoardName.ORIGINAL,
-            boards: 
+            boards: [
                 BoardName.ORIGINAL,
                 BoardName.HELLAS,
                 BoardName.ELYSIUM,
