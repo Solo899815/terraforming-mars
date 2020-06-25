@@ -170,6 +170,7 @@ export class Game implements ILoadable<SerializedGame, Game> {
       this.dealer = new Dealer(this.corporateEra, this.preludeExtension, this.venusNextExtension, this.coloniesExtension, this.promoCardsOption, this.turmoilExtension, Math.random());
       this.showOtherPlayersVP = gameOptions.showOtherPlayersVP;
       this.solarPhaseOption = gameOptions.solarPhaseOption;
+      this.onepreludecard = gameOptions.onepreludecard;
       this.soloTR = gameOptions.soloTR;
       this.initialDraft = gameOptions.initialDraftVariant;
 
@@ -251,7 +252,6 @@ export class Game implements ILoadable<SerializedGame, Game> {
       // Give each player their corporation cards and other cards
       for (var i = 0; i < players.length; i++) {
         const player = players[i];
-        const remainingPlayers = this.players.length - i;
         
         if (!player.beginner) {
           // Failsafe for exceding corporation pool
