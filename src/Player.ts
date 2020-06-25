@@ -1762,7 +1762,7 @@ export class Player implements ILoadable<SerializedPlayer, Player>{
 
     private endTurnOption(game: Game): PlayerInput {
       return new SelectOption("End Turn", () => {
-        this.actionsTakenThisRound = 1;
+        this.actionsTakenThisRound = 3;
         game.log(
           LogMessageType.DEFAULT,
           "${0} ended turn",
