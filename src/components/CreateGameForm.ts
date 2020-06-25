@@ -16,7 +16,6 @@ interface CreateGameModel {
     players: Array<NewPlayerModel>;
     corporateEra: boolean;
     prelude: boolean;
-    onepreludecard: boolean;
     draftVariant: boolean;
     initialDraft: boolean;
     randomFirstPlayer: boolean;
@@ -30,6 +29,7 @@ interface CreateGameModel {
     board: BoardName | "random";
     seed: number;
     solarPhaseOption: boolean;
+    onepreludecard: boolean;
     promoCardsOption: boolean;
     undoOption: boolean;
     startingCorporations: number;
@@ -61,7 +61,6 @@ export const CreateGameForm = Vue.component("create-game-form", {
             ],
             corporateEra: true,
             prelude: true,
-            onepreludecard: false,
             draftVariant: true,
             initialDraft: false,
             randomFirstPlayer: true,
@@ -73,7 +72,7 @@ export const CreateGameForm = Vue.component("create-game-form", {
             showCorporationList: false,
             isSoloModePage: false,
             board: BoardName.ORIGINAL,
-            boards: [
+            boards: 
                 BoardName.ORIGINAL,
                 BoardName.HELLAS,
                 BoardName.ELYSIUM,
@@ -82,6 +81,7 @@ export const CreateGameForm = Vue.component("create-game-form", {
             seed: Math.random(),
             seededGame: false,
             solarPhaseOption: true,
+            onepreludecard: false,
             promoCardsOption: true,
             undoOption: true,
             startingCorporations: 3,
@@ -153,7 +153,6 @@ export const CreateGameForm = Vue.component("create-game-form", {
             
             const corporateEra = component.corporateEra;
             const prelude = component.prelude;
-            const onepreludecard = component.onepreludecard;
             const draftVariant = component.draftVariant;
             const initialDraft = component.initialDraft;
             const showOtherPlayersVP = component.showOtherPlayersVP;
@@ -161,6 +160,7 @@ export const CreateGameForm = Vue.component("create-game-form", {
             const colonies = component.colonies;
             const turmoil = component.turmoil;
             const solarPhaseOption = this.solarPhaseOption;
+            const onepreludecard = component.onepreludecard;
             const customCorporationsList = component.customCorporationsList;
             const board =  component.board;
             const seed = component.seed;
@@ -181,7 +181,7 @@ export const CreateGameForm = Vue.component("create-game-form", {
             }
 
             const dataToSend = JSON.stringify({
-                players: players, corporateEra, prelude, onepreludecard, draftVariant, showOtherPlayersVP, venusNext, colonies, turmoil, customCorporationsList, board, seed, solarPhaseOption, promoCardsOption, undoOption, startingCorporations, soloTR, clonedGamedId, initialDraft 
+                players: players, corporateEra, prelude, draftVariant, showOtherPlayersVP, venusNext, colonies, turmoil, customCorporationsList, board, seed, solarPhaseOption, onepreludecard, promoCardsOption, undoOption, startingCorporations, soloTR, clonedGamedId, initialDraft 
             });
 
             const onSucces = (response: any) => {
@@ -306,7 +306,7 @@ export const CreateGameForm = Vue.component("create-game-form", {
 
                             <label class="form-switch" v-if="prelude">
                                 <input type="checkbox" name="onepreludecard" v-model="onepreludecard">
-                                <i class="form-icon"></i> <span v-i18n>One Prelude Card</span>
+                                <i class="form-icon"></i> <span v-i18n>Play One Prelude Card</span>
                             </label>
 
                             <label class="form-switch">
