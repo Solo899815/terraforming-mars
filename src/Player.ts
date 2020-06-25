@@ -2156,7 +2156,7 @@ export class Player implements ILoadable<SerializedPlayer, Player>{
         );
       }
     }
-      if (game.getPlayers().length > 1 && this.actionsTakenThisRound > 0) {
+      if (this.actionsTakenThisRound > 0) {
         action.options.push(
             this.endTurnOption(game)
         );
