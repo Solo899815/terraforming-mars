@@ -204,17 +204,27 @@ export class Game implements ILoadable<SerializedGame, Game> {
       // Add prelude corporations cards
       if (this.preludeExtension) {
         corporationCards.push(...ALL_PRELUDE_CORPORATIONS.map((cf) => new cf.factory()));
+        this.safestartingCorporations += 1;
       }
 
+      // Add Promo corporations cards
+      if (this.promoCardsOption) {
+        corporationCards.push(...ALL_PROMO_CORPORATIONS.map((cf) => new cf.factory()));
+        this.safestartingCorporations += 1;
+      }
+
+        
       // Add Venus Next corporations cards, board colonies and milestone / award
       if (this.venusNextExtension) {
         corporationCards.push(...ALL_VENUS_CORPORATIONS.map((cf) => new cf.factory()));
+        this.safestartingCorporations += 1;
         this.setVenusElements();
       }
 
       // Add colonies stuff
       if (this.coloniesExtension) {
         corporationCards.push(...ALL_COLONIES_CORPORATIONS.map((cf) => new cf.factory()));
+        this.safestartingCorporations += 1;
         this.colonyDealer = new ColonyDealer();
         this.colonies = this.colonyDealer.drawColonies(players.length);
         if (this.players.length === 1) {
@@ -227,6 +237,7 @@ export class Game implements ILoadable<SerializedGame, Game> {
       if (this.turmoilExtension) {
         this.turmoil = new Turmoil(this);
         corporationCards.push(...ALL_TURMOIL_CORPORATIONS.map((cf) => new cf.factory()));
+        this.safestartingCorporations += 1;
       }  
 
       // Setup custom corporation list
