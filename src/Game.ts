@@ -67,6 +67,7 @@ export interface GameOptions {
   showOtherPlayersVP: boolean;
   customCorporationsList: Array<CardName>;
   solarPhaseOption: boolean;
+  onepreludecard: boolean;
   promoCardsOption: boolean;
   undoOption: boolean;
   startingCorporations: number;
@@ -113,9 +114,11 @@ export class Game implements ILoadable<SerializedGame, Game> {
     public showOtherPlayersVP: boolean;
     private solarPhaseOption: boolean;
     public turmoil: Turmoil | undefined;
+    public onepreludecard: boolean;
     private promoCardsOption: boolean;
     public undoOption: boolean;
     private startingCorporations: number;
+    private safestartingCorporations = 2;
     public soloTR: boolean;
     private clonedGamedId: string | undefined;
     public initialDraft: boolean = false;
@@ -142,6 +145,7 @@ export class Game implements ILoadable<SerializedGame, Game> {
           showOtherPlayersVP: false,
           customCorporationsList: [],
           solarPhaseOption: false,
+          oneprelude: false,
           promoCardsOption: false,
           undoOption: false,
           startingCorporations: 2,
@@ -251,9 +255,13 @@ export class Game implements ILoadable<SerializedGame, Game> {
         
         if (!player.beginner) {
           // Failsafe for exceding corporation pool
-          if (this.startingCorporations * remainingPlayers > corporationCards.length) {
-            this.startingCorporations = 2;
+          if (this.startingCorporations > this.safestartingCorporations && this.startingCorporations * this.players.length > 38 ) {
+            this.startingCorporations = this.safestartingCorporations;
           }
+
+        if (this.startingCorporations * this.players.length < 12) {
+              this.startingCorporations = 2;
+            }
           for (let i = 0; i < this.startingCorporations; i++) {
             const corpCard : CorporationCard | undefined = corporationCards.pop();
             if (corpCard !== undefined) {
@@ -267,8 +275,14 @@ export class Game implements ILoadable<SerializedGame, Game> {
             player.dealtProjectCards.push(this.dealer.dealCard());
           }
           if (this.preludeExtension) {
-            for (let i = 0; i < 4; i++) {
-              player.dealtPreludeCards.push(this.dealer.dealPreludeCard());
+            if (this.onepreludecard) {
+              for (let i = 0; i < 3; i++) {
+                player.dealtPreludeCards.push(this.dealer.dealPreludeCard());
+              }
+            } else {
+              for (let i = 0; i < 4; i++) {
+                player.dealtPreludeCards.push(this.dealer.dealPreludeCard());
+              }
             }
           }
 
@@ -649,16 +663,27 @@ export class Game implements ILoadable<SerializedGame, Game> {
       );
 
       if (this.preludeExtension) {
-
-        result.options.push(
-          new SelectCard(
-            "Select 2 Prelude cards", player.dealtPreludeCards,
-            (preludeCards: Array<IProjectCard>) => {
-              player.preludeCardsInHand.push(preludeCards[0], preludeCards[1]);
-              return undefined;
-            }, 2, 2
-          )
-        );
+        if (this.onepreludecard) {
+          result.options.push(
+            new SelectCard(
+              "Select 1 Prelude cards", player.dealtPreludeCards,
+              (preludeCards: Array<IProjectCard>) => {
+                player.preludeCardsInHand.push(preludeCards[0]);
+                return undefined;
+              }, 1, 1
+            )
+          );
+        } else {
+          result.options.push(
+            new SelectCard(
+              "Select 2 Prelude cards", player.dealtPreludeCards,
+              (preludeCards: Array<IProjectCard>) => {
+                player.preludeCardsInHand.push(preludeCards[0], preludeCards[1]);
+                return undefined;
+              }, 2, 2
+            )
+          );
+        }
       }
 
       result.options.push(
