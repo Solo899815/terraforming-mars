@@ -213,7 +213,6 @@ export class Game implements ILoadable<SerializedGame, Game> {
         this.safestartingCorporations += 1;
       }
 
-        
       // Add Venus Next corporations cards, board colonies and milestone / award
       if (this.venusNextExtension) {
         corporationCards.push(...ALL_VENUS_CORPORATIONS.map((cf) => new cf.factory()));
