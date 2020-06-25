@@ -2026,7 +2026,7 @@ export class Player implements ILoadable<SerializedPlayer, Player>{
         return;
       }
 
-      if (game.hasPassedThisActionPhase(this) || this.actionsTakenThisRound >= 2) {
+      if (game.hasPassedThisActionPhase(this) || this.actionsTakenThisRound >= 3) {
         this.actionsTakenThisRound = 0;
         game.playerIsFinishedTakingActions();
         return;
@@ -2035,7 +2035,7 @@ export class Player implements ILoadable<SerializedPlayer, Player>{
       const action: OrOptions = new OrOptions();
       action.title = "Take action for action phase, select one " +
                        "available action.";
-
+    if (this.actionsTakenThisRound <= 1) {
       if (this.getPlayableCards(game).length > 0) {
         action.options.push(
             this.playProjectCard(game)
@@ -2131,21 +2131,6 @@ export class Player implements ILoadable<SerializedPlayer, Player>{
         }
       }
 
-      action.options.sort((a, b) => {
-        if (a.title > b.title) {
-          return 1;
-        } else if (a.title < b.title) {
-          return -1;
-        }
-        return 0;
-      });
-
-      if (game.getPlayers().length > 1 && this.actionsTakenThisRound > 0) {
-        action.options.push(
-            this.endTurnOption(game)
-        );
-      }
-
       if (
         this.canAfford(game.getAwardFundingCost()) &&
             !game.allAwardsFunded()) {
@@ -2165,21 +2150,37 @@ export class Player implements ILoadable<SerializedPlayer, Player>{
         action.options.push(standardProjects.options[0]);
       }
 
-      action.options.push(
-        this.passOption(game)
-      );
-
       if (this.cardsInHand.length > 0) {
         action.options.push(
             this.sellPatents(game)
         );
       }
+    }
+      if (game.getPlayers().length > 1 && this.actionsTakenThisRound > 0) {
+        action.options.push(
+            this.endTurnOption(game)
+        );
+      }
 
+      action.options.push(
+        this.passOption(game)
+      );
+        
       // Propose undo action only if you have done one action this turn
       if (this.actionsTakenThisRound > 0 && game.undoOption) {
         action.options.push(this.undoTurnOption(game));
       }
 
+
+      action.options.sort((a, b) => {
+        if (a.title > b.title) {
+          return 1;
+        } else if (a.title < b.title) {
+          return -1;
+        }
+        return 0;
+      });
+        
       this.setWaitingFor(action, () => {
         this.actionsTakenThisRound++;
         this.takeAction(game);
