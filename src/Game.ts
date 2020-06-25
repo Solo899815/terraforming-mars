@@ -265,7 +265,7 @@ export class Game implements ILoadable<SerializedGame, Game> {
         
         if (!player.beginner) {
           // Failsafe for exceding corporation pool
-          if (this.startingCorporations > this.safestartingCorporations && this.startingCorporations * this.players.length > this.corporationCards.length ) {
+          if (this.startingCorporations > this.safestartingCorporations && this.startingCorporations * this.players.length > corporationCards.length ) {
             this.startingCorporations = this.safestartingCorporations;
           }
           
